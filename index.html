@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('https://i.pinimg.com/736x/74/67/88/74678823726db4c0ee2156f0c09b4587.jpg') no-repeat center center/cover;
+            text-align: center;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        input {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+        }
+        button {
+            padding: 10px 15px;
+            margin-left: 10px;
+            border: none;
+            background: #ff9800;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #e68900;
+        }
+        .weather-info {
+            margin-top: 20px;
+        }
+        .icon {
+            width: 100px;
+            height: 100px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Weather App</h1>
+        <input type="text" id="city" placeholder="Enter city">
+        <button onclick="getWeather()">Get Weather</button>
+        <div class="weather-info" id="weather-info"></div>
+    </div>
+    
+    <script>
+        async function getWeather() {
+            const city = document.getElementById('city').value;
+            const apiKey = '0c85b5d239a945039c392525250302';
+            const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}`;
+            
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                let iconUrl = '';
+                const condition = data.current.condition.text.toLowerCase();
+                
+                if (condition.includes('')) {
+                    iconUrl = 'web.png';
+                } else if (condition.includes('')) {
+                    iconUrl = 'rex.png';
+                } else if (condition.includes('')) {
+                    iconUrl = 'https://i.pinimg.com/736x/17/df/f3/17dff398822118a7b050a41bcd6ec479.jpg';
+                } else {
+                    iconUrl = 'https://i.pinimg.com/736x/06/ef/a3/06efa3750b732518c99b24f176f7ce59.jpg';
+                }
+                
+                document.getElementById('weather-info').innerHTML = `
+                    <h2>${data.location.name}, ${data.location.country}</h2>
+                    <p>Temperature: ${data.current.temp_c}°C</p>
+                    <img src="${iconUrl}" class="icon">
+                    <p>${data.current.condition.text}</p>
+                `;
+            } catch (error) {
+                document.getElementById('weather-info').innerHTML = '<p style="color: red;">City not found!</p>';
+            }
+        }
+    </script>
+</body>
+</html>
